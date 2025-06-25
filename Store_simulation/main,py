@@ -1,0 +1,55 @@
+import inventory
+import helper
+
+def main():
+    while True:
+        print("\n=== 🚬 Cigarette Store Menu ===")
+        print("1. View Products")
+        print("2. Buy Product")
+        print("3. Restock Product")
+        print("4. Change Product Price")
+        print("5. Exit")
+
+        choice = helper.input_text("Choose option (1-5): ")
+
+        if choice == "1":
+            products = inventory.get_all_products()
+            helper.display_products(products)
+
+        elif choice == "2":
+            name = helper.input_text("Enter product name: ")
+            qty = helper.input_number("Quantity to buy: ")
+            if qty is None:
+                continue
+            success, response = inventory.buy_product(name, qty)
+            if success:
+                print(f"✅ Purchase successful! Total = Rp{response:,}")
+            else:
+                print(f"❌ {response}")
+
+        elif choice == "3":
+            name = helper.input_text("Enter product name to restock: ")
+            qty = helper.input_number("Quantity to add: ")
+            if qty is not None:
+                inventory.restock_product(name, qty)
+                print("✅ Product restocked.")
+
+        elif choice == "4":
+            name = helper.input_text("Enter product name: ")
+            new_price = helper.input_number("New price: Rp")
+            if new_price is not None:
+                updated = inventory.update_price(name, new_price)
+                if updated:
+                    print("✅ Price updated.")
+                else:
+                    print("❌ Product not found.")
+
+        elif choice == "5":
+            print("👋 Exiting store. Thank you!")
+            break
+
+        else:
+            print("❌ Invalid choice. Try again.")
+
+if __name__ == "__main__":
+    main()
